@@ -2,15 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Product } from "@/types";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler, useState } from "react";
+import { toast } from "sonner";
 import InputError from "@/components/input-error";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { toast } from "sonner";
 
-type CreateForm = {
+type EditForm = {
   name: string;
   description: string | null;
   category_id: string;
@@ -18,31 +19,33 @@ type CreateForm = {
   stock: number | null;
 }
 
-export function CreateProduct({ categories }: { categories: { [id: number]: string}}) {
+export function EditProduct({ product, categories }: { product: Product, categories: { [id: number]: string } }) {
   const [open, setOpen] = useState(false);
 
-  const { data, setData, post, errors, clearErrors, processing, reset } = useForm<Required<CreateForm>>({
-      name: '',
-      description: '',
-      category_id: '',
-      price: null,
-      stock: null,
+  const { data, setData, patch, errors, clearErrors, processing , reset} = useForm<Required<EditForm>>({
+    name: product.name,
+    description: product.description,
+    category_id: product.category_id.toString(),
+    price: product.price,
+    stock: product.stock,
   });
 
   const submit: FormEventHandler = (e) => {
-      e.preventDefault();
+    console.log('submit', data);
+    e.preventDefault();
 
-      post(route('products.store'), {
-        preserveScroll: true,
-        onSuccess: () => {
-          toast.success('Produto criado com sucesso');
-          setOpen(false)
-          reset();
-        }
-      });
+    patch(route('products.update', product.id), {
+      preserveScroll: true,
+      onSuccess: () => {
+        console.log('Produto atualizado com sucesso');
+        toast.success('Produto atualizado com sucesso');
+        setOpen(false)
+        reset();
+      }
+    });
   };
 
-  const handleInputChange = (field: keyof CreateForm, value: string | number | null) => {
+  const handleInputChange = (field: keyof EditForm, value: string | number | null) => {
     setData(field, value);
     clearErrors(field);
   };
@@ -50,13 +53,14 @@ export function CreateProduct({ categories }: { categories: { [id: number]: stri
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-          <Button className="w-full sm:w-auto">
-            <Plus className="mr-2 h-4 w-4" /> Novo Produto
-          </Button>
+        <Button variant="outline" size="sm">
+          <Pencil className="h-4 w-4" />
+          <span className="sr-only">Editar</span>
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Criar Produto</DialogTitle>
+          <DialogTitle>Editar Produto</DialogTitle>
           <DialogDescription>
             Faça suas mudanças e clique em salve quando estiver pronto.
           </DialogDescription>
@@ -67,13 +71,13 @@ export function CreateProduct({ categories }: { categories: { [id: number]: stri
               Nome
             </Label>
             <Input
-                id="name"
-                className="w-full col-span-3"
-                value={data.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                required
-                autoComplete="name"
-                placeholder="Nome"
+              id="name"
+              className="w-full col-span-3"
+              value={data.name}
+              onChange={(e) => handleInputChange('name', e.target.value)}
+              required
+              autoComplete="name"
+              placeholder="Nome"
             />
 
             <InputError className="col-span-3 col-start-2" message={errors.name} />
@@ -104,14 +108,14 @@ export function CreateProduct({ categories }: { categories: { [id: number]: stri
               Preço
             </Label>
             <Input
-                id="price"
-                type="number"
-                className="w-full col-span-3"
-                value={data.price?.toString()}
-                onChange={(e) => handleInputChange('price', Number(e.target.value))}
-                required
-                autoComplete="price"
-                placeholder="Preço"
+              id="price"
+              type="number"
+              className="w-full col-span-3"
+              value={data.price?.toString()}
+              onChange={(e) => handleInputChange('price', Number(e.target.value))}
+              required
+              autoComplete="price"
+              placeholder="Preço"
             />
 
             <InputError className="col-span-3 col-start-2" message={errors.price} />
@@ -121,14 +125,14 @@ export function CreateProduct({ categories }: { categories: { [id: number]: stri
               Quantidade
             </Label>
             <Input
-                id="stock"
-                type="number"
-                className="w-full col-span-3"
-                value={data.stock?.toString()}
-                onChange={(e) => handleInputChange('stock', Number(e.target.value))}
-                required
-                autoComplete="stock"
-                placeholder="Quantidade disponível"
+              id="stock"
+              type="number"
+              className="w-full col-span-3"
+              value={data.stock?.toString()}
+              onChange={(e) => handleInputChange('stock', Number(e.target.value))}
+              required
+              autoComplete="stock"
+              placeholder="Quantidade disponível"
             />
 
             <InputError className="col-span-3 col-start-2" message={errors.stock} />
@@ -143,7 +147,7 @@ export function CreateProduct({ categories }: { categories: { [id: number]: stri
               className="col-span-3"
               onChange={(e) => handleInputChange('description', e.target.value)}
             />
-             <InputError className="col-span-3 col-start-2" message={errors.description} />
+            <InputError className="col-span-3 col-start-2" message={errors.description} />
           </div>
         </div>
         <DialogFooter>
@@ -151,7 +155,7 @@ export function CreateProduct({ categories }: { categories: { [id: number]: stri
             onClick={submit}
             disabled={processing}
           >
-            Salvar
+            Salvar mudanças
           </Button>
         </DialogFooter>
       </DialogContent>
