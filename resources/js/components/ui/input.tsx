@@ -18,4 +18,43 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   )
 }
 
-export { Input }
+function DebounceInput({
+  className,
+  debounceTime = 500,
+  onDebouncedChange,
+  ...props
+}: React.ComponentProps<"input"> & { debounceTime?: number; onDebouncedChange: (value: string) => void }) {
+  const [inputValue, setInputValue] = React.useState<string>("");
+  const [debouncedValue, setDebouncedValue] = React.useState<string | undefined>();
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, debounceTime);
+
+    return () => clearTimeout(timer);
+  }, [inputValue, debounceTime]);
+
+  React.useEffect(() => {
+    if (debouncedValue !== undefined) {
+      onDebouncedChange(debouncedValue)
+    }
+
+  }, [debouncedValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  return (
+    <Input
+      type="text"
+      className={className}
+      value={inputValue}
+      onChange={handleChange}
+      {...props}
+    />
+  );
+}
+
+export { Input, DebounceInput }
