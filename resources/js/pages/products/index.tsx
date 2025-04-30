@@ -13,6 +13,7 @@ import { useState } from "react";
 // import { EditProduct } from "@/components/pages/Products/edit-Product";
 import { CreateProduct } from "@/components/pages/products/create-product";
 import { EditProduct } from "@/components/pages/products/edit-product";
+import { DeleteProduct } from "@/components/pages/products/delete-product";
 // import { EditProductEmployee } from "@/components/pages/Products/edit-Product-employee";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -140,6 +141,9 @@ export default function Products({ products, categories, can }: ProductsProps) {
                         <EditProduct
                           product={product}
                           categories={categories}
+                        />
+                        <DeleteProduct
+                          product={product}
                         />
                       </div>
                     </TableCell>
