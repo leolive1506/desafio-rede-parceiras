@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\IndexProductRequest;
+use App\Http\Requests\Product\StoreProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -24,25 +25,31 @@ class ProductController extends Controller
                 ->when(filled(data_get($filters, 'category')), function ($query) use ($filters) {
                     $query->where('category_id', data_get($filters, 'category'));
                 })
+                ->orderByDesc('id')
                 ->paginate(),
             'categories' => Category::query()->toBase()->select('id', 'name')->orderBy('name')->pluck('name', 'id'),
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        $category = Category::toBase()->select(['id', 'slug'])->find(data_get($data, 'category_id'));
+
+        $slug = str(data_get($data, 'name'))->slug();
+
+        $sku = "{$category->slug}-{$slug}";
+
+        Product::query()->create([
+            ...$data,
+            'sku' => $sku,
+        ]);
+
+        return to_route('products.index');
     }
 
     /**

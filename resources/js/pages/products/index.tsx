@@ -9,6 +9,10 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 import { Eye, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useState } from "react";
+// import { DeleteProduct } from "@/components/pages/Products/delete-Product";
+// import { EditProduct } from "@/components/pages/Products/edit-Product";
+import { CreateProduct } from "@/components/pages/products/create-product";
+// import { EditProductEmployee } from "@/components/pages/Products/edit-Product-employee";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -90,6 +94,8 @@ export default function Products({ products, categories, can }: ProductsProps) {
             </SelectContent>
           </Select>
         </div>
+
+        <CreateProduct categories={categories} />
       </div>
 
       <div className="px-4">
@@ -115,7 +121,7 @@ export default function Products({ products, categories, can }: ProductsProps) {
                   <TableRow key={product.id || product.name}>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell className="hidden md:table-cell">
-                      <div className="line-clamp-1">{product.description}</div>
+                      <div className="line-clamp-1">{product.description ?? "-"}</div>
                     </TableCell>
                     <TableCell>
                       <Badge>
