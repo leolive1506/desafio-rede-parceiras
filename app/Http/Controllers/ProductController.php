@@ -8,11 +8,13 @@ use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
     public function index(IndexProductRequest $request)
     {
+        Log::info('Product index');
         $filters = $request->validated();
 
         $search = data_get($filters, 'search');
@@ -50,9 +52,6 @@ class ProductController extends Controller
         return to_route('products.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateProductRequest $request, string $id)
     {
         $data = $request->validated();
