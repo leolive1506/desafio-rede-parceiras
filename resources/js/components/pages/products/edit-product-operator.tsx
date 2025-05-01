@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Product } from "@/types";
 import { PackageCheck } from "lucide-react";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { toast } from "sonner";
 import InputError from "@/components/input-error";
 
@@ -20,6 +20,12 @@ export function EditProductOperator({ product }: { product: Product }) {
     stock: product.stock,
   });
 
+  useEffect(() => {
+    setData({
+      stock: product.stock,
+    });
+  }, [open]);
+
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
@@ -28,9 +34,6 @@ export function EditProductOperator({ product }: { product: Product }) {
       onSuccess: () => {
         toast.success('Produto atualizado com sucesso');
         setOpen(false)
-        setDefaults({
-          stock: product.stock,
-        });
       }
     });
   };

@@ -22,13 +22,23 @@ type EditForm = {
 export function EditProduct({ product, categories }: { product: Product, categories: { [id: number]: string } }) {
   const [open, setOpen] = useState(false);
 
-  const { data, setData, patch, errors, clearErrors, processing , setDefaults } = useForm<Required<EditForm>>({
+  const { data, setData, patch, errors, clearErrors, processing } = useForm<Required<EditForm>>({
     name: product.name,
     description: product.description,
     category_id: product.category_id.toString(),
     price: product.price,
     stock: product.stock,
   });
+
+  useEffect(() => {
+    setData({
+      name: product.name,
+      description: product.description,
+      category_id: product.category_id.toString(),
+      price: product.price,
+      stock: product.stock,
+    });
+  }, [open]);
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -38,13 +48,6 @@ export function EditProduct({ product, categories }: { product: Product, categor
       onSuccess: () => {
         toast.success('Produto atualizado com sucesso');
         setOpen(false)
-        setDefaults({
-          name: product.name,
-          description: product.description,
-          category_id: product.category_id.toString(),
-          price: product.price,
-          stock: product.stock,
-        });
       }
     });
   };
