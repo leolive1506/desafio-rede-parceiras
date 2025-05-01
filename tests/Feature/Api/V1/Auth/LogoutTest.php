@@ -12,7 +12,7 @@ it('should remove the user device token when logging out', function (): void {
 
     Sanctum::actingAs($user);
 
-    postJson(route('auth.logout'))
+    postJson(route('v1.auth.logout'))
         ->assertSuccessful();
 
     assertDatabaseMissing('personal_access_tokens', [

@@ -11,7 +11,7 @@ it('should get user details', function (): void {
 
     actingAs($user);
 
-    getJson(route('auth.me'))
+    getJson(route('v1.auth.me'))
         ->assertSuccessful()
         ->assertJsonPath('content.user.id', $user->id)
         ->assertJsonPath('content.user.email', $user->email)

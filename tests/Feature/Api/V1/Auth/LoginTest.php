@@ -11,22 +11,15 @@ beforeEach(function () {
     ]);
 });
 
-it('should be able to login', function () {
-    postJson(route('auth.login'), [
-        'email'    => 'john@doe.com',
-        'password' => 'password',
-    ])->assertOk();
-});
-
 it('should not be able to login with invalid credentials', function () {
-    postJson(route('auth.login'), [
+    postJson(route('v1.auth.login'), [
         'email'    => 'john@doe.com',
         'password' => 'wrong-password',
     ])->assertUnprocessable();
 });
 
 it('should be able to return token', function () {
-    postJson(route('auth.login'), [
+    postJson(route('v1.auth.login'), [
         'email'    => 'john@doe.com',
         'password' => 'password',
     ])->assertJsonStructure([
@@ -40,7 +33,7 @@ it('should be able to return token', function () {
 });
 
 it('should be able to validate the request', function (string $property, mixed $value, string $rule) {
-    postJson(route('auth.login'), [
+    postJson(route('v1.auth.login'), [
         $property => $value,
     ])->assertJsonValidationErrors([
         $property => __("validation.{$rule}", ['attribute' => $property]),

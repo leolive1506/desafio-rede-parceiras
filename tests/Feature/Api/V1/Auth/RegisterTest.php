@@ -11,7 +11,7 @@ use function Pest\Laravel\postJson;
 it('should be able to register a user', function () {
     Notification::fake();
 
-    postJson(route('auth.register'), [
+    postJson(route('v1.auth.register'), [
         'name'     => 'John Doe',
         'email'    => 'john@doe.com',
         'password' => 'password',
@@ -42,7 +42,7 @@ it('should validate the request', function (string $property, mixed $value, stri
         User::factory()->create([$property => $value]);
     }
 
-    postJson(route('auth.register'), [
+    postJson(route('v1.auth.register'), [
         $property => $value,
     ])->assertJsonValidationErrors([
         $property => __("validation.{$rule}", ['attribute' => $property]),

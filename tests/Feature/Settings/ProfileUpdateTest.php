@@ -2,6 +2,8 @@
 
 use App\Models\User;
 
+use function Pest\Laravel\assertSoftDeleted;
+
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('profile page is displayed', function () {
@@ -66,7 +68,9 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    expect($user->fresh())->toBeNull();
+    assertSoftDeleted(User::class, [
+        'id' => $user->id,
+    ]);
 });
 
 test('correct password must be provided to delete account', function () {
