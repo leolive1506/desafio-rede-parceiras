@@ -9,6 +9,11 @@ use Illuminate\Validation\Rule;
 
 class StoreProductRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return $this->user()->can('update', Product::class);
+    }
+
     public function rules(): array
     {
         return [
