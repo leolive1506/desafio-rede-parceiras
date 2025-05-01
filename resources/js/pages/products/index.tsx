@@ -26,7 +26,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface ProductsProps {
   products: Paginate<Product>,
   categories: { [id: number]: string},
-  can: { create: boolean, update: boolean, delete: boolean, update_employee: boolean }
+  can: { create: boolean, update: boolean, delete: boolean }
 }
 
 export default function Products({ products, categories, can }: ProductsProps) {
@@ -97,7 +97,7 @@ export default function Products({ products, categories, can }: ProductsProps) {
           </Select>
         </div>
 
-        <CreateProduct categories={categories} />
+        {can.create && <CreateProduct categories={categories} />}
       </div>
 
       <div className="px-4">
@@ -138,13 +138,17 @@ export default function Products({ products, categories, can }: ProductsProps) {
                             <span className="sr-only">Visualizar</span>
                           </Link>
                         </Button>
-                        <EditProduct
-                          product={product}
-                          categories={categories}
-                        />
-                        <DeleteProduct
-                          product={product}
-                        />
+                        {can.update && (
+                          <EditProduct
+                            product={product}
+                            categories={categories}
+                          />
+                        )}
+                        {can.delete && (
+                          <DeleteProduct
+                            product={product}
+                          />
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

@@ -14,12 +14,16 @@ class ProductController extends Controller
 {
     public function index(IndexProductRequest $request)
     {
-        Log::info('Product index');
+        $user = $request->user();
         $filters = $request->validated();
-
         $search = data_get($filters, 'search');
 
         return inertia('products/index', [
+            'can' => [
+                'create' => $user->can('create', Product::class),
+                'update' => $user->can('update', Product::class),
+                'delete' => $user->can('delete', Product::class),
+            ],
             'products' => Product::query()
                 ->select(['id', 'category_id', 'name', 'price', 'sku', 'description', 'stock'])
                 ->when(filled($search), function ($query) use ($search) {
