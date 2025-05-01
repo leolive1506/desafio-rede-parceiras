@@ -23,6 +23,7 @@ class ProductController extends Controller
                 'create' => $user->can('create', Product::class),
                 'update' => $user->can('update', Product::class),
                 'delete' => $user->can('delete', Product::class),
+                'update_operator' => $user->can('updateOperator', Product::class),
             ],
             'products' => Product::query()
                 ->select(['id', 'category_id', 'name', 'price', 'sku', 'description', 'stock'])
@@ -58,18 +59,19 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, string $id)
     {
+        $product = Product::query()->select(['id', 'name', 'category_id'])->findOrFail($id);
+
         $data = $request->validated();
 
-        $category = Category::toBase()->select(['id', 'slug'])->find(data_get($data, 'category_id'));
+        if ($product->name !== data_get($data, 'name') || $product->category_id !== data_get($data, 'category_id')) {
+            $category = Category::toBase()->select(['id', 'slug'])->find(data_get($data, 'category_id'));
 
-        $slug = str(data_get($data, 'name'))->slug();
+            $slug = str(data_get($data, 'name'))->slug();
 
-        $sku = "{$category->slug}-{$slug}";
+            $data['sku'] = "{$category->slug}-{$slug}";
+        }
 
-        Product::where('id', $id)->update([
-            ...$data,
-            'sku' => $sku,
-        ]);
+        $product->update($data);
 
         return to_route('products.index');
     }
