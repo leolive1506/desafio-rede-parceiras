@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Product\IndexProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
+use App\Http\Requests\Product\UpdateOperatorProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
@@ -72,6 +73,13 @@ class ProductController extends Controller
         }
 
         $product->update($data);
+
+        return to_route('products.index');
+    }
+
+    public function updateOperator(UpdateOperatorProductRequest $request, string $id)
+    {
+        Product::query()->where('id', $id)->update($request->validated());
 
         return to_route('products.index');
     }

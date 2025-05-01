@@ -17,6 +17,11 @@ class ProductPolicy
         return $user->hasRole(Role::ADMIN);
     }
 
+    public function updateOperator(User $user): bool
+    {
+        return $user->hasRole(Role::OPERATOR);
+    }
+
     public function delete(User $user): bool
     {
         return $user->hasRole(Role::ADMIN);

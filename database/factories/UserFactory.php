@@ -41,7 +41,7 @@ class UserFactory extends Factory
 
     public function asAdmin(): static
     {
-        return $this->afterCreating(fn (User $user) => $user->giveRole(Role::ADMIN));
+        return $this->afterCreating(fn (User $user) => $user->giveManyRoles(Role::ADMIN, Role::OPERATOR));
     }
 
     public function asOperator(): static

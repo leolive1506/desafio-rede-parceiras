@@ -14,6 +14,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('products', ProductController::class);
+    Route::put('products/{product}/update-operator', [ProductController::class, 'updateOperator'])
+        ->name('products.update-operator');
 });
 
 require __DIR__.'/settings.php';

@@ -6,7 +6,7 @@ import { Product } from "@/types";
 import { Textarea } from "@/components/ui/textarea";
 import { Pencil } from "lucide-react";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { toast } from "sonner";
 import InputError from "@/components/input-error";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -22,7 +22,7 @@ type EditForm = {
 export function EditProduct({ product, categories }: { product: Product, categories: { [id: number]: string } }) {
   const [open, setOpen] = useState(false);
 
-  const { data, setData, patch, errors, clearErrors, processing , reset} = useForm<Required<EditForm>>({
+  const { data, setData, patch, errors, clearErrors, processing , setDefaults } = useForm<Required<EditForm>>({
     name: product.name,
     description: product.description,
     category_id: product.category_id.toString(),
@@ -31,16 +31,20 @@ export function EditProduct({ product, categories }: { product: Product, categor
   });
 
   const submit: FormEventHandler = (e) => {
-    console.log('submit', data);
     e.preventDefault();
 
     patch(route('products.update', product.id), {
       preserveScroll: true,
       onSuccess: () => {
-        console.log('Produto atualizado com sucesso');
         toast.success('Produto atualizado com sucesso');
         setOpen(false)
-        reset();
+        setDefaults({
+          name: product.name,
+          description: product.description,
+          category_id: product.category_id.toString(),
+          price: product.price,
+          stock: product.stock,
+        });
       }
     });
   };

@@ -9,12 +9,10 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 import { Eye, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useState } from "react";
-// import { DeleteProduct } from "@/components/pages/Products/delete-Product";
-// import { EditProduct } from "@/components/pages/Products/edit-Product";
 import { CreateProduct } from "@/components/pages/products/create-product";
 import { EditProduct } from "@/components/pages/products/edit-product";
 import { DeleteProduct } from "@/components/pages/products/delete-product";
-// import { EditProductEmployee } from "@/components/pages/Products/edit-Product-employee";
+import { EditProductOperator } from "@/components/pages/products/edit-product-operator";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,7 +24,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface ProductsProps {
   products: Paginate<Product>,
   categories: { [id: number]: string},
-  can: { create: boolean, update: boolean, delete: boolean }
+  can: { create: boolean, update: boolean, delete: boolean, update_operator: boolean }
 }
 
 export default function Products({ products, categories, can }: ProductsProps) {
@@ -106,8 +104,9 @@ export default function Products({ products, categories, can }: ProductsProps) {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[300px]">Nome</TableHead>
-                <TableHead className="hidden md:table-cell">Descrição</TableHead>
+                <TableHead>Quantidade</TableHead>
                 <TableHead>Categoria</TableHead>
+                <TableHead className="hidden md:table-cell">Descrição</TableHead>
                 <TableHead className="text-right">Ações</TableHead>
               </TableRow>
             </TableHeader>
@@ -122,13 +121,14 @@ export default function Products({ products, categories, can }: ProductsProps) {
                 products.data.map((product) => (
                   <TableRow key={product.id || product.name}>
                     <TableCell className="font-medium">{product.name}</TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      <div className="line-clamp-1">{product.description ?? "-"}</div>
-                    </TableCell>
+                    <TableCell className="font-medium text-center">{product.stock}</TableCell>
                     <TableCell>
                       <Badge>
                        {categories[product.category_id]}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="line-clamp-1">{product.description ?? "-"}</div>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -142,6 +142,11 @@ export default function Products({ products, categories, can }: ProductsProps) {
                           <EditProduct
                             product={product}
                             categories={categories}
+                          />
+                        )}
+                        {can.update_operator && (
+                          <EditProductOperator
+                            product={product}
                           />
                         )}
                         {can.delete && (
