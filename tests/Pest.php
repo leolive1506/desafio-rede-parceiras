@@ -11,8 +11,15 @@
 |
 */
 
+use Database\Seeders\RoleSeeder;
+
+use function Pest\Laravel\seed;
+
 pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(function () {
+        seed(RoleSeeder::class);
+    })
     ->in('Feature');
 
 /*

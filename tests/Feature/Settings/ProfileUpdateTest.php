@@ -4,8 +4,6 @@ use App\Models\User;
 
 use function Pest\Laravel\assertSoftDeleted;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
-
 test('profile page is displayed', function () {
     $user = User::factory()->create();
 
