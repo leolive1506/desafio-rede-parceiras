@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -16,12 +17,16 @@ beforeEach(function () {
   actingAs($this->user);
 });
 
-it('should only admin can create new product', function () {
+it('should only admin can create new product', function (string $role) {
   $this->user->roles()->detach();
+  $this->user->giveRole($role);
 
   post(route('products.store'))
     ->assertForbidden();
-});
+})->with([
+  Role::OPERATOR => [Role::OPERATOR],
+  Role::USER => [Role::USER],
+]);
 
 it('should create new product', function () {
   $category = Category::factory()->create();

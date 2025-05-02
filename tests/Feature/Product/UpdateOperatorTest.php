@@ -17,29 +17,21 @@ beforeEach(function () {
   actingAs($this->user);
 });
 
-it('should only admin can update new product', function (string $role) {
+it('should only user with operator role can update product', function () {
   $this->user->roles()->detach();
-  $this->user->giveRole($role);
 
-  put(route('products.update', $this->product->id))
+  put(route('products.update-operator', $this->product->id))
     ->assertForbidden();
 })->with([
-  Role::OPERATOR => [Role::OPERATOR],
   Role::USER => [Role::USER],
 ]);
 
 it('should update product', function () {
-  $category = Category::factory()->create();
-
   $data = [
-      'name' => 'Dell Inspiron 15 Laptop',
-      'description' => 'Laptop with Intel Core i5 processor, 8GB RAM, and 256GB SSD.',
-      'category_id' => $category->id,
-      'price' => 3499.90,
       'stock' => 25,
   ];
 
-  put(route('products.update', [
+  put(route('products.update-operator', [
     'product' => $this->product->id,
     ...$data
   ]))
@@ -48,12 +40,11 @@ it('should update product', function () {
   assertDatabaseHas(Product::class, [
     'id' => $this->product->id,
     ...$data,
-    'sku' => "{$category->slug}-" . str($data['name'])->slug(),
   ]);
 });
 
 it('should validate the request', function (string $property, mixed $value, string $rule, array $attributes = []) {
-  put(route('products.update', [
+  put(route('products.update-operator', [
     'product' => $this->product->id,
     $property => $value,
   ]))
@@ -64,24 +55,6 @@ it('should validate the request', function (string $property, mixed $value, stri
         ]),
     ]);
 })->with([
-  'name:required' => ['name', '', 'required'],
-  'name:max'      => ['name', str('a')->repeat(101)->toString(), 'max.string', [
-    'max' => 100
-  ]],
-
-  'category_id:required' => ['category_id', '', 'required', [
-    'attribute' => 'category id'
-  ]],
-  'category_id:exists'   => ['category_id', 9999, 'exists', [
-    'attribute' => 'category id'
-  ]],
-
-  'price:required' => ['price', '', 'required'],
-  'price:numeric'  => ['price', 'not-a-number', 'numeric'],
-  'price:min'      => ['price', 0.5, 'min.numeric', [
-    'min' => 1
-  ]],
-
   'stock:required' => ['stock', '', 'required'],
   'stock:integer'  => ['stock', 3.5, 'integer'],
   'stock:min'      => ['stock', -1, 'min.numeric', [

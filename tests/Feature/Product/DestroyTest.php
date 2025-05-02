@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\Role;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -15,12 +16,16 @@ beforeEach(function () {
   actingAs($this->user);
 });
 
-it('should only admin can create new product', function () {
+it('should only admin can delete product', function (string $role) {
   $this->user->roles()->detach();
+  $this->user->giveRole($role);
 
   delete(route('products.destroy', $this->product->id))
     ->assertForbidden();
-});
+})->with([
+  Role::OPERATOR => [Role::OPERATOR],
+  Role::USER => [Role::USER],
+]);
 
 it('should delete product', function () {
   delete(route('products.destroy', [
