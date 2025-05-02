@@ -5,7 +5,6 @@ use App\Models\Product;
 use App\Models\Role;
 use App\Models\User;
 use Database\Seeders\CategorySeeder;
-use Illuminate\Testing\Assert;
 use Inertia\Testing\AssertableInertia;
 
 use function Pest\Laravel\actingAs;
