@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,9 +14,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    Route::resource('products', ProductController::class);
-    Route::put('products/{product}/update-operator', [ProductController::class, 'updateOperator'])
-        ->name('products.update-operator');
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::put('{product}', [ProductController::class, 'update'])->name('update');
+        Route::delete('{product}', [ProductController::class, 'destroy'])->name('destroy')->can('delete', Product::class);
+        Route::put('{product}/update-operator', [ProductController::class, 'updateOperator'])->name('update-operator');
+    });
 });
 
 require __DIR__.'/settings.php';
