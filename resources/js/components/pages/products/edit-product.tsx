@@ -22,7 +22,7 @@ type EditForm = {
 export function EditProduct({ product, categories }: { product: Product, categories: { [id: number]: string } }) {
   const [open, setOpen] = useState(false);
 
-  const { data, setData, patch, errors, clearErrors, processing } = useForm<Required<EditForm>>({
+  const { data, setData, put, errors, clearErrors, processing } = useForm<Required<EditForm>>({
     name: product.name,
     description: product.description,
     category_id: product.category_id.toString(),
@@ -43,7 +43,7 @@ export function EditProduct({ product, categories }: { product: Product, categor
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
-    patch(route('products.update', product.id), {
+    put(route('products.update', product.id), {
       preserveScroll: true,
       onSuccess: () => {
         toast.success('Produto atualizado com sucesso');

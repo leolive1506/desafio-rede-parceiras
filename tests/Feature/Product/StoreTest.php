@@ -85,4 +85,7 @@ it('should validate the request', function (string $property, mixed $value, stri
   'stock:min'      => ['stock', -1, 'min.numeric', [
     'min' => 0
   ]],
+  'stock:max'      => ['stock', 99999999, 'max.numeric', [
+    'max' => 9999999
+  ]],
 ]);

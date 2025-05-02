@@ -21,7 +21,7 @@ class UpdateProductRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'category_id' => ['required', Rule::exists(Category::class, 'id')],
             'price' => ['required', 'numeric', 'min:1'],
-            'stock' => ['required', 'integer', 'min:0'],
+            'stock' => ['required', 'integer', 'min:0', 'max:9999999'],
         ];
     }
 

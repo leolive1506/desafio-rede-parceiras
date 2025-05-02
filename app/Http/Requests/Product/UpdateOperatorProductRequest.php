@@ -15,7 +15,7 @@ class UpdateOperatorProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'stock' => ['required', 'integer', 'min:0'],
+            'stock' => ['required', 'integer', 'min:0', 'max:9999999'],
         ];
     }
 }
