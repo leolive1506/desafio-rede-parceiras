@@ -14,7 +14,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet/index"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Tooltip,
