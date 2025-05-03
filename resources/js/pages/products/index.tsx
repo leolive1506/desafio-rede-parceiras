@@ -1,11 +1,11 @@
 import { DebounceInput } from "@/components/ui/input";
 import { Pagination } from "@/components/ui/pagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/ui/badge/index";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, Product, Paginate } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Head, Link, router, usePage } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { Eye, Search } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useState } from "react";
