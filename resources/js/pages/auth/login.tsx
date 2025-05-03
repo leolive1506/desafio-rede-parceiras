@@ -7,7 +7,7 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox/index';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Label } from '@/components/ui/label/index';
 import AuthLayout from '@/layouts/auth-layout';
 
 type LoginForm = {
