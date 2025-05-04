@@ -7,7 +7,7 @@ import { BreadcrumbItem, Product, Paginate } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Head, Link, router } from "@inertiajs/react";
 import { Eye, Search } from "lucide-react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table/index";
 import { useState } from "react";
 import { CreateProduct } from "@/components/pages/products/create-product";
 import { EditProduct } from "@/components/pages/products/edit-product";
