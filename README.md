@@ -24,6 +24,7 @@
 ---
 
 ##  Getting Started
+[![See video](https://img.youtube.com/vi/detXnSC9hDQ/0.jpg)](https://www.youtube.com/watch?v=detXnSC9hDQ)
 
 ###  Prerequisites
 
@@ -92,6 +93,11 @@ After running the seed command, initial data will be populated into the database
 
 The default password for all seeded users is `password`.
 
+
+```sh
+❯ npm run dev
+```
+
 ###  Testing
 Run the test suite using the following command:
 
@@ -146,7 +152,7 @@ Authorization: Bearer {token}
 
 ---
 
-### `GET /api/v1/v1/products/{product}/stock`
+### `GET /api/v1/products/{product}/stock`
 
 **Headers**
 
