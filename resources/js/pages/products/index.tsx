@@ -104,6 +104,7 @@ export default function Products({ products, categories, can }: ProductsProps) {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[300px]">Nome</TableHead>
+                <TableHead>Preço</TableHead>
                 <TableHead>Quantidade</TableHead>
                 <TableHead>Categoria</TableHead>
                 <TableHead className="hidden md:table-cell">Descrição</TableHead>
@@ -113,14 +114,20 @@ export default function Products({ products, categories, can }: ProductsProps) {
             <TableBody>
               {products.data.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="h-24 text-center">
-                    Nenhum negócio encontrado.
+                  <TableCell colSpan={6} className="h-24 text-center">
+                    Nenhum produto encontrado.
                   </TableCell>
                 </TableRow>
               ) : (
                 products.data.map((product) => (
                   <TableRow key={product.id || product.name}>
                     <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell className="font-medium">
+                      {Number(product.price).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                      })}
+                    </TableCell>
                     <TableCell className="font-medium text-center">{product.stock}</TableCell>
                     <TableCell>
                       <Badge>
