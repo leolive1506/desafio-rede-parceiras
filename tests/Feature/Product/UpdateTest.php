@@ -81,6 +81,9 @@ it('should validate the request', function (string $property, mixed $value, stri
   'price:min'      => ['price', 0.5, 'min.numeric', [
     'min' => 1
   ]],
+  'price:max'      => ['price', 999999999.99, 'max.numeric', [
+    'max' => 99999999.99
+  ]],
 
   'stock:required' => ['stock', '', 'required'],
   'stock:integer'  => ['stock', 3.5, 'integer'],

@@ -20,7 +20,7 @@ class StoreProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:100', Rule::unique(Product::class)],
             'description' => ['nullable', 'string'],
             'category_id' => ['required', Rule::exists(Category::class, 'id')],
-            'price' => ['required', 'numeric', 'min:1'],
+            'price' => ['required', 'numeric', 'min:1', 'max:99999999.99'],
             'stock' => ['required', 'integer', 'min:0', 'max:9999999'],
         ];
     }
