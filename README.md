@@ -76,10 +76,6 @@ Run desafio-rede-parceiras using the following command:
 ❯ ./vendor/bin/sail up -d
 ```
 
-
-
-
-
 ```sh
 ❯ ./vendor/bin/sail artisan migrate --seed
 ```
@@ -103,3 +99,57 @@ Run the test suite using the following command:
 ❯ ./vendor/bin/sail pest --parallel
 ```
 ---
+
+
+## API Routes
+
+See Insomnia file in `docs/Insomnia_2025-05-05.yaml`
+
+### 🔐 Auth
+
+---
+
+### `POST /api/v1/login`
+
+**Body**
+
+```json
+{
+  "email": "admin@admin.com",
+  "password": "password"
+}
+```
+
+---
+
+### `POST /api/v1/logout`
+
+**Headers**
+
+```text
+Authorization: Bearer {token}
+```
+
+---
+
+### `GET /api/v1/me`
+
+**Headers**
+
+```text
+Authorization: Bearer {token}
+```
+
+---
+
+### 📦 Products
+
+---
+
+### `GET /api/v1/v1/products/{product}/stock`
+
+**Headers**
+
+```text
+Authorization: Bearer {token}
+```
