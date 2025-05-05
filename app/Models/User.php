@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function hasRole(string $role): bool
     {
-        return $this->roles()->where('name', $role)->exists();
+        return cache()->remember("user:{$this->id}:{$role}", 600, fn () => $this->roles()->where('name', $role)->exists());
     }
 
     public function hasRoles(string ...$roles): bool
@@ -59,11 +59,13 @@ class User extends Authenticatable
         return $this->roles()->toBase()->whereIn('name', $roles)->exists();
     }
 
-    public function giveRole(string ...$role): void
+    public function giveRole(string $role): void
     {
         $model = Role::firstWhere('name', $role);
 
         $this->roles()->syncWithoutDetaching($model);
+
+        cache()->forget("user:{$this->id}:{$role}");
     }
 
     public function giveManyRoles(string ...$roles): void
@@ -71,6 +73,10 @@ class User extends Authenticatable
         $models = Role::query()->whereIn('name', $roles)->get();
 
         $this->roles()->syncWithoutDetaching($models);
+
+        foreach ($roles as $role) {
+            cache()->forget("user:{$this->id}:{$role}");
+        }
     }
 
     public function removeRole(string $role): void
@@ -78,5 +84,7 @@ class User extends Authenticatable
         $model = Role::firstWhere('name', $role);
 
         $this->roles()->detach($model);
+
+        cache()->forget("user:{$this->id}:{$role}");
     }
 }
