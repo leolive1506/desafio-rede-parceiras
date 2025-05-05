@@ -62,6 +62,11 @@ export interface Paginate<T> {
     total: number;
 }
 
+interface Category {
+    id: number;
+    name: string
+}
+
 interface Product {
     id: number;
     name: string;
@@ -69,6 +74,7 @@ interface Product {
     price: number;
     category_id: number;
     stock: number;
+    category: Category
     description: string | null;
     created_at: string | Date;
     updated_at: string | Date;

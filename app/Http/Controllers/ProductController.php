@@ -38,6 +38,17 @@ class ProductController extends Controller
         ]);
     }
 
+    public function show(string $sku)
+    {
+        $product = Product::query()
+            ->with('category:id,name')
+            ->where('sku', $sku)
+            ->select(['id', 'category_id', 'name', 'price', 'sku', 'stock', 'description', 'created_at', 'updated_at'])
+            ->firstOrFail();
+
+        return inertia('products/show', compact('product'));
+    }
+
     public function store(StoreProductRequest $request)
     {
         $data = $request->validated();

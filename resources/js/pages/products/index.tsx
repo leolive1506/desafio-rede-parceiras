@@ -13,6 +13,7 @@ import { CreateProduct } from "@/components/pages/products/create-product";
 import { EditProduct } from "@/components/pages/products/edit-product";
 import { DeleteProduct } from "@/components/pages/products/delete-product";
 import { EditProductOperator } from "@/components/pages/products/edit-product-operator";
+import { formatPrice } from "@/lib/utils";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -123,10 +124,7 @@ export default function Products({ products, categories, can }: ProductsProps) {
                   <TableRow key={product.id || product.name}>
                     <TableCell className="font-medium">{product.name}</TableCell>
                     <TableCell className="font-medium">
-                      {Number(product.price).toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      })}
+                      {formatPrice(product.price)}
                     </TableCell>
                     <TableCell className="font-medium text-center">{product.stock}</TableCell>
                     <TableCell>
@@ -140,7 +138,7 @@ export default function Products({ products, categories, can }: ProductsProps) {
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" size="sm" asChild>
-                          <Link href={`/products/${product.id || 1}`}>
+                          <Link href={route('products.show', product.sku)}>
                             <Eye className="h-4 w-4" />
                             <span className="sr-only">Visualizar</span>
                           </Link>
